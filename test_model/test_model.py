@@ -8,7 +8,7 @@ from torch import nn
 from torch.optim.lr_scheduler import StepLR
 from tqdm import tqdm
 
-from related_function.function import calculate_metrics, plot_confusion_matrix, main_data_loader
+from ..related_function.function import calculate_metrics, plot_confusion_matrix, main_data_loader
 
 
 class TestModel:
