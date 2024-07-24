@@ -83,8 +83,8 @@ def main_data_loader(data_dir, sample_method, batch_size):
 
     data_train = data['data_tensor_train']
     label_train = data['label_tensor_train']
-    data_valid = data['data_tensor_valid']
-    label_valid = data['label_tensor_valid']
+    data_valid = data['data_tensor_val']
+    label_valid = data['label_tensor_val']
 
     balancer = BalancedData(data_train, label_train)
     data_train_b, label_train_b = balancer.sample(method=sample_method)
