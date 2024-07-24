@@ -77,7 +77,7 @@ class TrainModel:
         """
         train_total_loss = []
         train_loss_list = []
-        val_loss_list = []
+        valid_loss_list = []
         accuracy_list_auc = []
         specificity_list_auc = []
         alarm_sen_list_auc = []
@@ -115,7 +115,7 @@ class TrainModel:
             if self.valid:
                 (loss, accuracy_auc, specificity_auc, alarm_sen_auc, alarm_acc_auc,
                  accuracy_prc, specificity_prc, alarm_sen_prc, alarm_acc_prc, auc, prc, brier) = self.validate(epoch)
-                val_loss_list.append(loss)
+                valid_loss_list.append(loss)
                 accuracy_list_auc.append(accuracy_auc)
                 specificity_list_auc.append(specificity_auc)
                 alarm_sen_list_auc.append(alarm_sen_auc)
@@ -131,7 +131,7 @@ class TrainModel:
                 info = {
                     "train_total_loss": train_total_loss,
                     "train_loss_list": train_loss_list,
-                    "val_loss_list": val_loss_list,
+                    "valid_loss_list": valid_loss_list,
                     "accuracy_list_auc": accuracy_list_auc,
                     "specificity_list_auc": specificity_list_auc,
                     "alarm_sen_list_auc": alarm_sen_list_auc,
@@ -203,7 +203,7 @@ class TrainModel:
             if self.valid:
                 (loss, accuracy_auc, specificity_auc, alarm_sen_auc, alarm_acc_auc,
                  accuracy_prc, specificity_prc, alarm_sen_prc, alarm_acc_prc, auc, prc, brier) = self.validate(epoch)
-                val_loss_list.append(loss)
+                valid_loss_list.append(loss)
                 accuracy_list_auc.append(accuracy_auc)
                 specificity_list_auc.append(specificity_auc)
                 alarm_sen_list_auc.append(alarm_sen_auc)
@@ -219,7 +219,7 @@ class TrainModel:
                 info = {
                     "train_total_loss": train_total_loss,
                     "train_loss_list": train_loss_list,
-                    "val_loss_list": val_loss_list,
+                    "valid_loss_list": valid_loss_list,
                     "accuracy_list_auc": accuracy_list_auc,
                     "specificity_list_auc": specificity_list_auc,
                     "alarm_sen_list_auc": alarm_sen_list_auc,

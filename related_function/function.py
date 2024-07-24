@@ -75,9 +75,9 @@ def calculate_metrics(true_labels_flat, predicted_probs_flat, best_threshold):
 def main_data_loader(data_dir, sample_method, batch_size):
     """
     加载数据
-    :param data_dir: 数据位置。如：data_label_1/data_tensor_24.pth
+    :param data_dir: 数据位置。如：生成tensor/mice_mmscaler_use_6_predict_6.pth
     :param sample_method: 采样方式。如："undersample" or "oversample" or "smote"
-    :return: train_dataloader_f, val_dataloader_f, test_dataloader_f
+    :return: train_dataloader_f, valid_dataloader_f, test_dataloader_f
     """
     data = torch.load(data_dir)
 
@@ -85,22 +85,18 @@ def main_data_loader(data_dir, sample_method, batch_size):
     label_train = data['label_tensor_train']
     data_val = data['data_tensor_val']
     label_val = data['label_tensor_val']
-    data_test = data['data_tensor_test']
-    label_test = data['label_tensor_test']
 
     balancer = BalancedData(data_train, label_train)
     data_train_b, label_train_b = balancer.sample(method=sample_method)
 
     dataset_train = TensorDataset(data_train_b, label_train_b)
     dataset_val = TensorDataset(data_val, label_val)
-    dataset_test = TensorDataset(data_test, label_test)
 
     # 利用 DataLoader 来加载数据集
     train_dataloader_f = DataLoader(dataset_train, batch_size=batch_size, shuffle=True)
-    val_dataloader_f = DataLoader(dataset_val, batch_size=batch_size, shuffle=True)
-    test_dataloader_f = DataLoader(dataset_test, batch_size=batch_size, shuffle=True)
+    valid_dataloader_f = DataLoader(dataset_val, batch_size=batch_size, shuffle=True)
     # print("Data loaded successfully!")
-    return train_dataloader_f, val_dataloader_f, test_dataloader_f
+    return train_dataloader_f, valid_dataloader_f
 
 
 def plot_info(info, model_name, root_dir=None, is_print=True):
@@ -120,7 +116,7 @@ def plot_info(info, model_name, root_dir=None, is_print=True):
     # 绘制训练和验证损失
     plt.figure()
     plt.plot(epochs, info['train_loss_list'], label='Train Loss')
-    plt.plot(epochs, info['val_loss_list'], label='Validation Loss')
+    plt.plot(epochs, info['valid_loss_list'], label='Validation Loss')
     plt.xlabel('Epochs')
     plt.ylabel('Loss')
     plt.title(f'Train and Validation Loss of {model_name}')

@@ -70,7 +70,7 @@ Zhongda_before_after
    2. For example, 20th and 27th epoch of `use_6_predict_6_BiLSTM_BN_larger_model_undersample_FocalLoss_50_5e-06`
    3. Set the hyperparameters at the beginning of the `model_trainer_factory()` class. 
       + The hyperparameters used for training such model were saved in the `00_hyperparameters.json` file.
-   4. Run code: 
+   4. Run code [main.py](main.py): 
       + `Trainer = model_trainer_factory()`
       + `Trainer.select_model(6, 6, "undersample", BiLSTM_BN_larger, [20, 27])`
    5. Selected model will be saved in the `f'select_model/{root_dir}/zzz_saved_model'` folder.
