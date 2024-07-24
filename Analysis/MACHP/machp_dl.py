@@ -1,9 +1,20 @@
+import os
 import pickle
+import sys
 import pandas as pd
 import numpy as np
 import torch
 from tqdm.auto import tqdm
 
+# 获取 machp_dl.py 的目录
+script_dir = os.path.dirname(os.path.abspath(__file__))
+
+# 获取父目录的路径，并添加到 sys.path
+related_function_dir = os.path.abspath(os.path.join(script_dir, '../../'))
+sys.path.append(related_function_dir)
+
+# 现在可以导入相关模块
+from related_function import *
 
 def normalize_input(x):
     hr_max = 300
@@ -32,7 +43,7 @@ def process_data(model, data, observe_window):
     results = []
 
     # 对于每个时间窗口
-    for start_time in tqdm(range(min_time, max_time - observe_window)):
+    for start_time in range(min_time, max_time - observe_window):
         end_time = start_time + observe_window
         proportion_array = []
 
@@ -93,15 +104,14 @@ def process_data(model, data, observe_window):
 if __name__ == '__main__':
     # Load models
     model_paths = {
-        # 'model_name': 'path_to_model'
-        # 'use_20_predict_24_BiLSTM_BN_3layers_30': 'E:/deeplearning/Zhongda_2/Zhongda_data_2/zzz_saved_model/use_20_predict_24_BiLSTM_BN_3layers_model_undersample_FocalLoss_50_5e-06_model_30.pth',
+        'use_20_predict_24_BiLSTM_BN_3layers_33': '../../select_model/Zhongda_data/zzz_saved_model/use_20_predict_24_BiLSTM_BN_3layers_model_undersample_FocalLoss_50_5e-06_model_33.pth'
     }
     models = {name: torch.load(path, map_location=torch.device('cuda')).eval() for name, path in model_paths.items()}
 
     model_names = list(models.keys())
 
     # Load data
-    with open('data_split_dict_0710.pkl', 'rb') as file:
+    with open('../data_split_dict_0724.pkl', 'rb') as file:
         proportions = pickle.load(file)
 
     for type in ['train_data', 'valid_data']:
