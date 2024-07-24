@@ -51,7 +51,7 @@ class model_trainer_factory():
             for predict_window in [20]:
                 tensor_direction = f'生成tensor/mice_mmscaler_use_{observe_window}_predict_{predict_window}.pth'
 
-                root_dir = 'Zhongda_data'
+                root_dir = 'Results_zhongda_before_after'
                 name = f'use_{observe_window}_predict_{predict_window}'
                 data_process = '前后填充 + 均值方差标准化'
 
@@ -86,7 +86,8 @@ class model_trainer_factory():
                                                                                              self.BATCH_SIZE)
                         loss_f = FocalLoss(self.ALPHA_LOSS, self.GAMMA_LOSS)
                         trainer = TrainModel(model_name, model, self.hyperparameters, train_dataloader, val_dataloader,
-                                             criterion_class=loss_f, root_dir=root_dir, is_print=False)
+                                             criterion_class=loss_f, root_dir=root_dir, is_print=False,
+                                             model_self_name=model.__name__)
                         info = trainer.train()
                         trainer.save_model()
                         plot_info(info, model_name, root_dir=root_dir)
