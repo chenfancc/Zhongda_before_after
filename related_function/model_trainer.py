@@ -268,10 +268,11 @@ class TrainModel:
         保存终末状态模型
         :return: None
         """
-        if self.root_dir is None:
-            torch.save(self.model, f"{self.model_name}/00_{self.model_name}_final_model.pth")
-        else:
-            torch.save(self.model, f"{self.root_dir}/{self.model_name}/00_{self.model_name}_final_model.pth")
+        if not self.save_model_index:
+            if self.root_dir is None:
+                torch.save(self.model, f"{self.model_name}/00_{self.model_name}_final_model.pth")
+            else:
+                torch.save(self.model, f"{self.root_dir}/{self.model_name}/00_{self.model_name}_final_model.pth")
 
         return None
 
