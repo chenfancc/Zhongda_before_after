@@ -184,7 +184,7 @@ class TrainModel:
                 model_directory = f"./{self.root_dir}/{self.model_name}/"
 
             if not os.path.exists(model_directory):
-                os.makedirs(model_directory)
+                if not self.save_model_index: os.makedirs(model_directory)
             if self.save_model_index and (epoch + 1) in self.save_model_index:
                 if self.root_dir is None:
                     model_saved_dir = f'zzz_saved_model/{self.model_name}_model_{epoch + 1}.pth'
@@ -248,16 +248,17 @@ class TrainModel:
                 # serializable_info = convert_to_serializable(info)
                 info = convert_to_serializable(info)
 
-                if self.root_dir is None:
-                    with open(f'./{self.model_name}/00_hyperparameters.json', 'w') as json_file:
-                        json.dump(hyperparameters, json_file, indent=4)
-                    with open(f'./{self.model_name}/00_info.json', 'w') as json_file:
-                        json.dump(info, json_file, indent=4)
-                else:
-                    with open(f'./{self.root_dir}/{self.model_name}/00_hyperparameters.json', 'w') as json_file:
-                        json.dump(hyperparameters, json_file, indent=4)
-                    with open(f'./{self.root_dir}/{self.model_name}/00_info.json', 'w') as json_file:
-                        json.dump(info, json_file, indent=4)
+                if not self.save_model_index:
+                    if self.root_dir is None:
+                        with open(f'./{self.model_name}/00_hyperparameters.json', 'w') as json_file:
+                            json.dump(hyperparameters, json_file, indent=4)
+                        with open(f'./{self.model_name}/00_info.json', 'w') as json_file:
+                            json.dump(info, json_file, indent=4)
+                    else:
+                        with open(f'./{self.root_dir}/{self.model_name}/00_hyperparameters.json', 'w') as json_file:
+                            json.dump(hyperparameters, json_file, indent=4)
+                        with open(f'./{self.root_dir}/{self.model_name}/00_info.json', 'w') as json_file:
+                            json.dump(info, json_file, indent=4)
             self.scheduler.step()
 
         return info
@@ -361,10 +362,11 @@ class TrainModel:
         plt.ylabel('True Positive Rate')
         plt.title(f'Receiver Operating Characteristic (ROC) - Epoch {epoch + 1}')
         plt.legend(loc="lower right")
-        if self.root_dir is None:
-            plt.savefig(f"{self.model_name}/{self.model_name}_ROC_EPOCH_{epoch + 1}.png")
-        else:
-            plt.savefig(f"{self.root_dir}/{self.model_name}/{self.model_name}_ROC_EPOCH_{epoch + 1}.png")
+        if not self.save_model_index:
+            if self.root_dir is None:
+                plt.savefig(f"{self.model_name}/{self.model_name}_ROC_EPOCH_{epoch + 1}.png")
+            else:
+                plt.savefig(f"{self.root_dir}/{self.model_name}/{self.model_name}_ROC_EPOCH_{epoch + 1}.png")
 
         plt.close()
 
@@ -386,10 +388,11 @@ class TrainModel:
         plt.ylabel('Precision')
         plt.title(f'Precision-Recall Curve - Epoch {epoch + 1}')
         plt.legend(loc='lower left')
-        if self.root_dir is None:
-            plt.savefig(f"{self.model_name}/{self.model_name}_PRC_EPOCH_{epoch + 1}.png")
-        else:
-            plt.savefig(f"{self.root_dir}/{self.model_name}/{self.model_name}_PRC_EPOCH_{epoch + 1}.png")
+        if not self.save_model_index:
+            if self.root_dir is None:
+                plt.savefig(f"{self.model_name}/{self.model_name}_PRC_EPOCH_{epoch + 1}.png")
+            else:
+                plt.savefig(f"{self.root_dir}/{self.model_name}/{self.model_name}_PRC_EPOCH_{epoch + 1}.png")
         plt.grid()
         plt.close()
 
@@ -408,10 +411,11 @@ class TrainModel:
         if self.is_print: print(f"Accuracy: {valid_accuracy:.4f}")
 
         # 绘制混淆矩阵
-        if self.root_dir is None:
-            plot_confusion_matrix(self.model_name, name, epoch, cm, classes=['Survive', 'Death'])
-        else:
-            plot_confusion_matrix(self.model_name, name, epoch, cm, classes=['Survive', 'Death'], root_dir=self.root_dir)
+        if not self.save_model_index:
+            if self.root_dir is None:
+                plot_confusion_matrix(self.model_name, name, epoch, cm, classes=['Survive', 'Death'])
+            else:
+                plot_confusion_matrix(self.model_name, name, epoch, cm, classes=['Survive', 'Death'], root_dir=self.root_dir)
 
 
         return valid_accuracy, valid_specificity, valid_alarm_sen, valid_alarm_acc
