@@ -308,9 +308,9 @@ def Zhongda_test_model(tensor_direction, observe_window, predict_window, model, 
              true_labels_flat_valid, predicted_probs_flat_valid, root_dir)
     plot_prc(true_labels_flat_train, predicted_probs_flat_train,
              true_labels_flat_valid, predicted_probs_flat_valid, root_dir)
-    with open(f'{root_dir}/{model.__class__.__name__}_info_train.json', 'w') as json_file:
+    with open(f'../Analysis/metrics_info/{model.__class__.__name__}_info_train.json', 'w') as json_file:
         json.dump(info_train, json_file, ensure_ascii=False, indent=4, default=convert_to_serializable)
-    with open(f'{root_dir}/{model.__class__.__name__}_info_valid.json', 'w') as json_file:
+    with open(f'../Analysis/metrics_info/{model.__class__.__name__}_info_valid.json', 'w') as json_file:
         json.dump(info_valid, json_file, ensure_ascii=False, indent=4, default=convert_to_serializable)
 
     print(f'finish {root_dir}')
