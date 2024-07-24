@@ -80,20 +80,20 @@ def process_data(model, data, observe_window):
             patient_data_tensor = torch.cat((patient_data_tensor, torch.tensor(all_patient_data)), dim=0)
 
         # 加载数据并处理模型
-        patient_label_tensor = patient_label_tensor[:, :, :5]
+        patient_data_tensor = patient_data_tensor[:, :, :5]
         # patient_label_tensor 现在包含所有患者的数据，可以继续处理
-        if patient_label_tensor is None:
+        if patient_data_tensor is None:
             predictions = [-1]
         else:
             # 输入模型并获取输出
-            if patient_label_tensor.shape[0] > 8000:
-                patient_data_tensor_1 = patient_label_tensor[:8000]
-                patient_data_tensor_2 = patient_label_tensor[8000:]
+            if patient_data_tensor.shape[0] > 8000:
+                patient_data_tensor_1 = patient_data_tensor[:8000]
+                patient_data_tensor_2 = patient_data_tensor[8000:]
                 model_output_1 = model(patient_data_tensor_1.float())
                 model_output_2 = model(patient_data_tensor_2.float())
                 model_output = torch.cat((model_output_1, model_output_2), 0).detach().cpu().numpy()
             else:
-                model_output = model(patient_label_tensor.float()).detach().cpu().numpy()
+                model_output = model(patient_data_tensor.float()).detach().cpu().numpy()
             # 根据阈值进行分类
             predictions = model_output
 
