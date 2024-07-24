@@ -81,9 +81,7 @@ class model_trainer_factory():
                         # 设置随机种子
                         np.random.seed(self.SEED)
                         torch.manual_seed(self.SEED)
-                        train_dataloader, val_dataloader, test_dataloader = main_data_loader(tensor_direction,
-                                                                                             SAMPLE_METHOD,
-                                                                                             self.BATCH_SIZE)
+                        train_dataloader, val_dataloader = main_data_loader(tensor_direction, SAMPLE_METHOD, self.BATCH_SIZE)
                         loss_f = FocalLoss(self.ALPHA_LOSS, self.GAMMA_LOSS)
                         trainer = TrainModel(model_name, model, self.hyperparameters, train_dataloader, val_dataloader,
                                              criterion_class=loss_f, root_dir=root_dir, is_print=False,
@@ -99,9 +97,7 @@ class model_trainer_factory():
         model_name = f"{name}_{model.__name__}_model_{SAMPLE_METHOD}_FocalLoss_{self.EPOCH}_{self.LR}"
         np.random.seed(self.SEED)
         torch.manual_seed(self.SEED)
-        train_dataloader, val_dataloader, test_dataloader = main_data_loader(tensor_direction,
-                                                                             SAMPLE_METHOD,
-                                                                             self.BATCH_SIZE)
+        train_dataloader, val_dataloader = main_data_loader(tensor_direction, SAMPLE_METHOD, self.BATCH_SIZE)
         loss_f = FocalLoss(self.ALPHA_LOSS, self.GAMMA_LOSS)
         trainer = TrainModel(model_name, model, self.hyperparameters, train_dataloader, val_dataloader,
                              criterion_class=loss_f, root_dir=root_dir, is_print=True, save_model_index=epoch)
@@ -113,6 +109,6 @@ if __name__ == '__main__':
     # Trainer.select_model(20, 24, "undersample", BiLSTM_BN_3layers, [30])
     # Trainer.select_model(20, 24, "undersample", GRU_BN_ResBlock, [6])
     # Trainer.select_model(20, 24, "undersample", RNN_BN, [30])
-    Trainer.select_model(6, 6, "undersample", BiLSTM_BN, [2])
 
-    # Trainer.model_train()
+    Trainer.model_train()
+    Trainer.select_model(6, 6, "undersample", BiLSTM_BN, [2])
