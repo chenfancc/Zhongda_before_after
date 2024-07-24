@@ -83,18 +83,18 @@ def main_data_loader(data_dir, sample_method, batch_size):
 
     data_train = data['data_tensor_train']
     label_train = data['label_tensor_train']
-    data_val = data['data_tensor_val']
-    label_val = data['label_tensor_val']
+    data_valid = data['data_tensor_valid']
+    label_valid = data['label_tensor_valid']
 
     balancer = BalancedData(data_train, label_train)
     data_train_b, label_train_b = balancer.sample(method=sample_method)
 
     dataset_train = TensorDataset(data_train_b, label_train_b)
-    dataset_val = TensorDataset(data_val, label_val)
+    dataset_valid = TensorDataset(data_valid, label_valid)
 
     # 利用 DataLoader 来加载数据集
     train_dataloader_f = DataLoader(dataset_train, batch_size=batch_size, shuffle=True)
-    valid_dataloader_f = DataLoader(dataset_val, batch_size=batch_size, shuffle=True)
+    valid_dataloader_f = DataLoader(dataset_valid, batch_size=batch_size, shuffle=True)
     # print("Data loaded successfully!")
     return train_dataloader_f, valid_dataloader_f
 

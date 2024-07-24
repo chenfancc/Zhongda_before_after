@@ -46,9 +46,9 @@ class model_trainer_factory():
 
     def model_train(self):
         # input_size = observe_window
-        for observe_window in [6]:
+        for observe_window in [20, 24]:
             # i：结果时间步
-            for predict_window in [6]:
+            for predict_window in [20, 24]:
                 tensor_direction = f'生成tensor/mice_mmscaler_use_{observe_window}_predict_{predict_window}.pth'
 
                 root_dir = 'Results_zhongda_before_after'
@@ -63,7 +63,7 @@ class model_trainer_factory():
                     #               BiLSTM_BN_ResBlock, GRU_BN_ResBlock, RNN_BN_ResBlock,
                     #               BiLSTM_BN_ResBlock_3layers, GRU_BN_ResBlock_3layers, RNN_BN_ResBlock_3layers,
                     #               BiLSTM_BN_single, GRU_BN_single, RNN_BN_single]:
-                    for model in [BiLSTM_BN]:
+                    for model in [BiLSTM_BN_3layers, GRU_BN, GRU_BN_ResBlock, RNN_BN]:
                         # if observe_window == 8 and predict_window == 6: continue
 
                         print(SAMPLE_METHOD, "_", model.__name__)
@@ -111,4 +111,4 @@ if __name__ == '__main__':
     # Trainer.select_model(20, 24, "undersample", RNN_BN, [30])
 
     Trainer.model_train()
-    Trainer.select_model(6, 6, "undersample", BiLSTM_BN, [2])
+    # Trainer.select_model(6, 6, "undersample", BiLSTM_BN, [2])
