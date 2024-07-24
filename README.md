@@ -77,4 +77,4 @@ Zhongda_before_after
    5. Selected model will be saved in the `f'select_model/{root_dir}/zzz_saved_model'` folder. 
 ## Evaluate the model:
 1. Run [test_model.py](test_model/test_model.py) --> `test/use_6_predict_6_BiLSTM_BN_larger_20` --> `info_train.json` and `info_valid.json`
-2. 
+2. bbb
