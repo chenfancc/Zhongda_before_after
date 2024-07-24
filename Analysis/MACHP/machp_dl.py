@@ -48,35 +48,36 @@ def process_data(model, data, observe_window):
         proportion_array = []
 
         # 对于每个患者
-        ew_ids = data['EW_ID'].unique()
-        patient_label_tensor = None
-        filtered_data = data[
-            (data['time_diff_hours'] >= start_time) &
-            (data['time_diff_hours'] < end_time)
+        ew_ids = dropped_data['EW_ID'].unique()
+        patient_data_tensor = None
+        # 预先筛选数据，只进行一次
+        filtered_data = dropped_data[
+            (dropped_data['time_diff_hours'] >= start_time) &
+            (dropped_data['time_diff_hours'] < end_time)
             ]
 
         # 创建一个空列表来收集所有的患者数据
-        all_patient_label = []
+        all_patient_data = []
 
         for ew_id in tqdm(ew_ids, desc=f'start_time: {start_time}/{max_time - observe_window}'):
             # 获取特定患者在该时间窗口内的数据
             patient_data = filtered_data[filtered_data['EW_ID'] == ew_id]
-            patient_label = patient_data['final_label']
 
             if patient_data.shape[0] == observe_window:
                 # 输入模型并获取输出
-                all_patient_label.append(patient_label.to_numpy())
+                patient_data = patient_data.drop(columns=['EW_ID', 'time_diff_hours', 'final_label'])
+                all_patient_data.append(patient_data.to_numpy())
 
         # 将所有患者的数据转换为单个 numpy 数组，然后再转换为 tensor
-        if all_patient_label:
-            all_patient_label_np = np.array(all_patient_label)
-            patient_label_tensor = torch.tensor(all_patient_label_np)
+        if all_patient_data:
+            all_patient_data_np = np.array(all_patient_data)
+            patient_data_tensor = torch.tensor(all_patient_data_np)
         else:
-            patient_label_tensor = None
+            patient_data_tensor = None
 
         # 检查最终的 tensor
-        if patient_label_tensor is not None and patient_label_tensor.shape[0] == 1:
-            patient_label_tensor = torch.cat((patient_label_tensor, torch.tensor(all_patient_label)), dim=0)
+        if patient_data_tensor is not None and patient_data_tensor.shape[0] == 1:
+            patient_data_tensor = torch.cat((patient_data_tensor, torch.tensor(all_patient_data)), dim=0)
 
         # 加载数据并处理模型
         patient_label_tensor = patient_label_tensor[:, :, :5]
