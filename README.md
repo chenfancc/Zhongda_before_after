@@ -1,6 +1,6 @@
 1. Clone the code and prepare the environment:
 ```
-git clone xxxxxxxx
+git clone https://github.com/chenfancc/Zhongda_before_after.git
 cd Zhongda_before_after
 
 conda create -n zhongda_env python=3.11
@@ -46,6 +46,7 @@ pip install -r requirements.txt
      + run code: 
        + `Trainer = model_trainer_factory()`
        + `Trainer.model_train()`
+     + You will get: `{root_dir}` directory
    2. Select the model you want: 
       1. run[select_model.ipynb](select_model/select_model.ipynb), `auc_reslts.csv` was generated. Select the model you wanted
       2. for example, 20th and 27th epoch of `use_6_predict_6_BiLSTM_BN_larger_model_undersample_FocalLoss_50_5e-06`
