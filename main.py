@@ -46,9 +46,9 @@ class model_trainer_factory():
 
     def model_train(self):
         # input_size = observe_window
-        for observe_window in [20, 24]:
+        for observe_window in [20]:
             # i：结果时间步
-            for predict_window in [20, 24]:
+            for predict_window in [24]:
                 tensor_direction = f'生成tensor/mice_mmscaler_use_{observe_window}_predict_{predict_window}.pth'
 
                 root_dir = 'Results_zhongda_before_after'
