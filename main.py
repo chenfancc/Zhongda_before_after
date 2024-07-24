@@ -55,7 +55,7 @@ class model_trainer_factory():
                 name = f'use_{observe_window}_predict_{predict_window}'
                 data_process = '前后填充 + 均值方差标准化'
 
-                for SAMPLE_METHOD in ["smote"]:
+                for SAMPLE_METHOD in ["undersample"]:
                     # for model in [BiLSTM_BN, BiLSTM_BN_larger, BiLSTM_BN_Resnet, BiLSTM_BN_3layers,
                     #               BiLSTM_BN_4layers,
                     #               GRU_BN, GRU_BN_3layers, GRU_BN_4layers,
@@ -64,7 +64,7 @@ class model_trainer_factory():
                     #               BiLSTM_BN_ResBlock_3layers, GRU_BN_ResBlock_3layers, RNN_BN_ResBlock_3layers,
                     #               BiLSTM_BN_single, GRU_BN_single, RNN_BN_single]:
                     for model in [BiLSTM_BN]:
-                        if observe_window == 8 and predict_window == 6: continue
+                        # if observe_window == 8 and predict_window == 6: continue
 
                         print(SAMPLE_METHOD, "_", model.__name__)
                         current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")  # 获取当前时间
