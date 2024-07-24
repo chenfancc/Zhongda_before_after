@@ -115,6 +115,6 @@ if __name__ == '__main__':
     # Trainer.select_model(20, 24, "undersample", BiLSTM_BN_3layers, [30])
     # Trainer.select_model(20, 24, "undersample", GRU_BN_ResBlock, [6])
     # Trainer.select_model(20, 24, "undersample", RNN_BN, [30])
-    # Trainer.select_model(20, 24, "undersample", GRU_BN, [29])
+    Trainer.select_model(6, 6, "undersample", BiLSTM_BN, [2])
 
-    Trainer.model_train()
+    # Trainer.model_train()
