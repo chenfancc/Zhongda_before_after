@@ -320,5 +320,5 @@ if __name__ == '__main__':
     # model = torch.load('model_direction')
     # Zhongda_test_model(TIME_STPE, i, model, epoch)
     model = torch.load('../select_model/Zhongda_data/zzz_saved_model/use_6_predict_6_BiLSTM_BN_model_undersample_FocalLoss_5_5e-06_model_2.pth')
-    tensor_direction = '../生成tensor/mice_mmscaler_use_6_predict_6.pth'
+    tensor_direction = '../生成tensor/mice_mmscaler_use_20_predict_24.pth'
     Zhongda_test_model(tensor_direction, 6, 6, model, 30)
