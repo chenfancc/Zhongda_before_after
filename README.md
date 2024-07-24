@@ -41,6 +41,7 @@ pip install -r requirements.txt
 + [生成tensor](生成tensor): the generated tensor used to train the model.
 # Work flow:
 ## ***WARNING: NO NEED, NO MODIFY***
+## Train the model:
 1. Run [main.py](main.py): 
   + set the hyperparameters at the beginning of the `main_trainier_factory()` class.
   + run code: 
@@ -73,5 +74,6 @@ Zhongda_before_after
    4. Run code [main.py](main.py): 
       + `Trainer = model_trainer_factory()`
       + `Trainer.select_model(6, 6, "undersample", BiLSTM_BN_larger, [20, 27])`
-   5. Selected model will be saved in the `f'select_model/{root_dir}/zzz_saved_model'` folder.
-3. Evaluate the model:
+   5. Selected model will be saved in the `f'select_model/{root_dir}/zzz_saved_model'` folder. 
+## Evaluate the model:
+1. Run [test_model.py](test_model/test_model.py) --> 

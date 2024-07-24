@@ -1,5 +1,7 @@
 import json
 import os
+import sys
+import warnings
 import matplotlib.pyplot as plt
 import numpy as np
 import torch.optim
@@ -8,8 +10,14 @@ from torch import nn
 from torch.optim.lr_scheduler import StepLR
 from tqdm import tqdm
 
-from ..related_function.function import calculate_metrics, plot_confusion_matrix, main_data_loader
 
+# 获取项目根目录的路径
+project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(project_root)
+from related_function.function import calculate_metrics, plot_confusion_matrix, main_data_loader
+
+
+warnings.filterwarnings('ignore', category=RuntimeWarning)
 
 class TestModel:
     """
@@ -118,7 +126,7 @@ class TestModel:
             valid_accuracy_prc, valid_specificity_prc, valid_alarm_sen_prc, valid_alarm_acc_prc, cm_prc, PPV, NPV, F1 = self._calculate_criterion(
                 true_labels_flat, predicted_probs_flat, best_threshold_prc, self.epoch, "prc")
 
-            for i in range(0, 1000):
+            for i in range(0, 1000) if self.is_print else tqdm(range(0, 1000)):
                 threshold = i / 1000
                 valid_accuracy, valid_specificity, valid_alarm_sen, valid_alarm_acc, cm, PPV, NPV, F1 = self._calculate_criterion(
                     true_labels_flat, predicted_probs_flat, threshold, self.epoch, f"threshold = {threshold}")
@@ -289,12 +297,12 @@ def Zhongda_test_model(tensor_direction, observe_window, predict_window, model, 
 
     np.random.seed(SEED)
     torch.manual_seed(SEED)
-    train_dataloader, val_dataloader = main_data_loader(tensor_direction, 'origin', BATCH_SIZE)
+    train_dataloader, valid_dataloader = main_data_loader(tensor_direction, 'origin', BATCH_SIZE)
 
     info_train, true_labels_flat_train, predicted_probs_flat_train = TestModel(f'{root_dir}_train', model, device, epoch,
-                                                                      train_dataloader, root_dir=root_dir).test()
+                                                                      train_dataloader, root_dir=root_dir, is_print=False).test()
     info_valid, true_labels_flat_valid, predicted_probs_flat_valid = TestModel(f'{root_dir}_valid', model, device, epoch,
-                                                                  val_dataloader, root_dir=root_dir).test()
+                                                                      valid_dataloader, root_dir=root_dir, is_print=False).test()
 
     plot_roc(true_labels_flat_train, predicted_probs_flat_train,
              true_labels_flat_valid, predicted_probs_flat_valid, root_dir)
@@ -311,6 +319,6 @@ def Zhongda_test_model(tensor_direction, observe_window, predict_window, model, 
 if __name__ == '__main__':
     # model = torch.load('model_direction')
     # Zhongda_test_model(TIME_STPE, i, model, epoch)
-    model = torch.load(
-        'E:\deeplearning\Zhongda_2\Zhongda_data_2\zzz_saved_model\\use_20_predict_24_BiLSTM_BN_3layers_model_undersample_FocalLoss_50_5e-06_model_30.pth')
-    Zhongda_test_model(20, 24, model, 30)
+    model = torch.load('../select_model/Zhongda_data/zzz_saved_model/use_6_predict_6_BiLSTM_BN_model_undersample_FocalLoss_5_5e-06_model_2.pth')
+    tensor_direction = '../生成tensor/mice_mmscaler_use_6_predict_6.pth'
+    Zhongda_test_model(tensor_direction, 6, 6, model, 30)
