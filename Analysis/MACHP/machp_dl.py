@@ -93,15 +93,12 @@ def process_data(model, data, observe_window):
 if __name__ == '__main__':
     # Load models
     model_paths = {
-        'use_20_predict_24_BiLSTM_BN_3layers_30': 'E:/deeplearning/Zhongda_2/Zhongda_data_2/zzz_saved_model/use_20_predict_24_BiLSTM_BN_3layers_model_undersample_FocalLoss_50_5e-06_model_30.pth',
-        'use_20_predict_24_GRU_BN_29': 'E:/deeplearning/Zhongda_2/Zhongda_data_2/zzz_saved_model/use_20_predict_24_GRU_BN_model_undersample_FocalLoss_50_5e-06_model_29.pth',
-        'use_20_predict_24_RNN_BN_30': 'E:/deeplearning/Zhongda_2/Zhongda_data_2/zzz_saved_model/use_20_predict_24_RNN_BN_model_undersample_FocalLoss_50_5e-06_model_30.pth',
-        'use_20_predict_24_GRU_BN_ResBlock_6': 'E:/deeplearning/Zhongda_2/Zhongda_data_2/zzz_saved_model/use_20_predict_24_GRU_BN_ResBlock_model_undersample_FocalLoss_50_5e-06_model_6.pth'
+        # 'model_name': 'path_to_model'
+        # 'use_20_predict_24_BiLSTM_BN_3layers_30': 'E:/deeplearning/Zhongda_2/Zhongda_data_2/zzz_saved_model/use_20_predict_24_BiLSTM_BN_3layers_model_undersample_FocalLoss_50_5e-06_model_30.pth',
     }
     models = {name: torch.load(path, map_location=torch.device('cuda')).eval() for name, path in model_paths.items()}
 
     model_names = list(models.keys())
-    type_num = {'train_data': 100000, 'test_data': 1006, 'val_data': 918}
 
     # Load data
     with open('data_split_dict_0710.pkl', 'rb') as file:

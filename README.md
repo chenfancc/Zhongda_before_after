@@ -39,6 +39,8 @@ pip install -r requirements.txt
   + [sample.py](related_function/sample.py): the sample method used to sample the data.
   + [xlstm.py](related_function/xlstm.py): xlstm block
 + [生成tensor](生成tensor): the generated tensor used to train the model.
++ [Analysis](Analysis): the analysis of the results.
+  + [data_split_dict_0724.pkl](Analysis%2Fdata_split_dict_0724.pkl): the original data split dictionary.
 # Work flow:
 ## ***WARNING: NO NEED, NO MODIFY***
 ## Train the model:
@@ -77,4 +79,4 @@ Zhongda_before_after
    5. Selected model will be saved in the `f'select_model/{root_dir}/zzz_saved_model'` folder. 
 ## Evaluate the model:
 1. Run [test_model.py](test_model/test_model.py) --> `test/use_6_predict_6_BiLSTM_BN_larger_20` --> `info_train.json` and `info_valid.json`
-2. bbb
+2. Run [machp_dl.py](Analysis%2FMACHP%2Fmachp_dl.py) -->

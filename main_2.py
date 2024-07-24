@@ -49,29 +49,29 @@ class model_trainer_factory():
     def MIMIC_train(self):
         is_print = False
         # input_size = TIME_STEP
-        for observe_window in [20]:
+        for observe_window in [20, 6, 8, 12, 18, 24]:
             # i：结果时间步
-            for predict_window in [24]:
-                tensor_direction = f'生成tensor/mice_mmscaler_use_{observe_window}_predict_{predict_window}.pth'
+            for predict_window in [24, 6, 8, 12, 18, 20]:
+                tensor_direction = f'Zhongda_before_after/生成tensor/delta/mice_mmscaler_use_{observe_window}_predict_{predict_window}_delta.pth'
 
                 if os.path.exists(tensor_direction) and os.path.getsize(tensor_direction) > 0:
                     try:
-                        root_dir = 'Results_zhongda_before_after'
+                        root_dir = 'Results_zhongda_before_after_delta'
                         name = f'use_{observe_window}_predict_{predict_window}'
                         data_process = '前后填充 + 均值方差标准化'
 
                         for SAMPLE_METHOD in ["undersample"]:
-                            # for model in tqdm([
-                            #     BiLSTM_BN,
-                            #     BiLSTM_BN_larger, BiLSTM_BN_Resnet, BiLSTM_BN_3layers,
-                            #     BiLSTM_BN_4layers,
-                            #     GRU_BN, GRU_BN_3layers, GRU_BN_4layers,
-                            #     RNN_BN, RNN_BN_3layers, RNN_BN_4layers,
-                            #     BiLSTM_BN_ResBlock, GRU_BN_ResBlock, RNN_BN_ResBlock,
-                            #     BiLSTM_BN_ResBlock_3layers, GRU_BN_ResBlock_3layers, RNN_BN_ResBlock_3layers,
-                            #     BiLSTM_BN_single, GRU_BN_single, RNN_BN_single, sLSTM
-                            # ], desc=f'{name}: '):
-                            for model in [BiLSTM_BN_3layers, GRU_BN, GRU_BN_ResBlock, RNN_BN] if is_print else tqdm([BiLSTM_BN_3layers, GRU_BN, GRU_BN_ResBlock, RNN_BN]):
+                            for model in tqdm([
+                                BiLSTM_BN,
+                                BiLSTM_BN_larger, BiLSTM_BN_Resnet, BiLSTM_BN_3layers,
+                                BiLSTM_BN_4layers,
+                                GRU_BN, GRU_BN_3layers, GRU_BN_4layers,
+                                RNN_BN, RNN_BN_3layers, RNN_BN_4layers,
+                                BiLSTM_BN_ResBlock, GRU_BN_ResBlock, RNN_BN_ResBlock,
+                                BiLSTM_BN_ResBlock_3layers, GRU_BN_ResBlock_3layers, RNN_BN_ResBlock_3layers,
+                                BiLSTM_BN_single, GRU_BN_single, RNN_BN_single, sLSTM
+                            ], desc=f'{name}: '):
+                            # for model in [BiLSTM_BN_3layers, GRU_BN, GRU_BN_ResBlock, RNN_BN] if is_print else tqdm([BiLSTM_BN_3layers, GRU_BN, GRU_BN_ResBlock, RNN_BN]):
 
                                 if is_print: print(SAMPLE_METHOD, "_", model.__name__)
                                 if is_print: current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")  # 获取当前时间
@@ -94,9 +94,7 @@ class model_trainer_factory():
                                 # 设置随机种子
                                 np.random.seed(self.SEED)
                                 torch.manual_seed(self.SEED)
-                                train_dataloader, val_dataloader, test_dataloader = main_data_loader(tensor_direction,
-                                                                                                     SAMPLE_METHOD,
-                                                                                                     self.BATCH_SIZE)
+                                train_dataloader, val_dataloader = main_data_loader(tensor_direction, SAMPLE_METHOD, self.BATCH_SIZE)
                                 loss_f = FocalLoss(self.ALPHA_LOSS, self.GAMMA_LOSS)
                                 trainer = TrainModel(model_name, model, self.hyperparameters, train_dataloader,
                                                      val_dataloader,
@@ -118,9 +116,7 @@ class model_trainer_factory():
         model_name = f"{name}_{model.__name__}_model_{SAMPLE_METHOD}_FocalLoss_{self.EPOCH}_{self.LR}"
         np.random.seed(self.SEED)
         torch.manual_seed(self.SEED)
-        train_dataloader, val_dataloader, test_dataloader = main_data_loader(tensor_direction,
-                                                                             SAMPLE_METHOD,
-                                                                             self.BATCH_SIZE)
+        train_dataloader, val_dataloader = main_data_loader(tensor_direction, SAMPLE_METHOD, self.BATCH_SIZE)
         loss_f = FocalLoss(self.ALPHA_LOSS, self.GAMMA_LOSS)
         trainer = TrainModel(model_name, model, self.hyperparameters, train_dataloader, val_dataloader,
                              criterion_class=loss_f, root_dir=root_dir, is_print=True, save_model_index=epoch)
