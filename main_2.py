@@ -52,7 +52,7 @@ class model_trainer_factory():
         for observe_window in [20, 6, 8, 12, 18, 24]:
             # i：结果时间步
             for predict_window in [24, 6, 8, 12, 18, 20]:
-                tensor_direction = f'Zhongda_before_after/生成tensor/delta/mice_mmscaler_use_{observe_window}_predict_{predict_window}_delta.pth'
+                tensor_direction = f'生成tensor/delta/mice_mmscaler_use_{observe_window}_predict_{predict_window}_delta.pth'
 
                 if os.path.exists(tensor_direction) and os.path.getsize(tensor_direction) > 0:
                     try:
