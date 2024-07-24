@@ -105,9 +105,7 @@ class model_trainer_factory():
         loss_f = FocalLoss(self.ALPHA_LOSS, self.GAMMA_LOSS)
         trainer = TrainModel(model_name, model, self.hyperparameters, train_dataloader, val_dataloader,
                              criterion_class=loss_f, root_dir=root_dir, is_print=True, save_model_index=epoch)
-        info = trainer.train()
-        trainer.save_model()
-        plot_info(info, model_name, root_dir=root_dir)
+        _ = trainer.train()
 
 
 if __name__ == '__main__':
