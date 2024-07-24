@@ -47,6 +47,24 @@ pip install -r requirements.txt
        + `Trainer = model_trainer_factory()`
        + `Trainer.model_train()`
      + You will get: `{root_dir}` directory
+```text
+Zhongda_before_after
+├── {root_dir}
+│   ├── use_6_predict_6_BiLSTM_BN_larger_model_undersample_FocalLoss_50_5e-06
+│   │   ├── 00_hyperparameters.json # the hyperparameters used for training the model
+│   │   ├── 00_info.json # the information of the metrics list
+│   │   ├── 00_use_6_predict_6_BiLSTM_BN_larger_model_undersample_FocalLoss_50_5e-06_final_model.pth # the final model
+│   │   ├── 01_total_loss.png # the total loss curve
+│   │   ├── 02_loss_curve.png # the loss curve of each epoch
+│   │   ├── 03_model_performance_auc.png # the metrics at the best Youden Index of each epoch
+│   │   ├── 04_mdoel_performance_prc.png # the metrics at the best precision-recall curve of each epoch
+│   │   ├── 05_auc_cureve.png # the auc curve of each epoch
+│   │   ├── 06_prc_curve.png # the precision-recall curve of each epoch
+│   │   ├── 06_roc_curve.png # the roc curve of each epoch
+│   │   ├── 07_brier_score.png # the brier score of each epoch
+│   │   ├── ... # Confusion matrix, ROC curve, PRC curve of each epoch
+│   ├── ... # other models
+```
    2. Select the model you want: 
       1. run[select_model.ipynb](select_model/select_model.ipynb), `auc_reslts.csv` was generated. Select the model you wanted
       2. for example, 20th and 27th epoch of `use_6_predict_6_BiLSTM_BN_larger_model_undersample_FocalLoss_50_5e-06`
