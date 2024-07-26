@@ -102,7 +102,7 @@ class TestModel:
 
         data_list = []  # 临时存储列表
         label_list = []  # 临时标签列表
-        for _, id in enumerate(tqdm(unique_ids)):  # 添加 tqdm 进度条
+        for _, id in enumerate(tqdm(unique_ids, desc=f"Loading data {self.model_name}")):  # 添加 tqdm 进度条
 
             patient_data = self.data[self.data[:, 0] == id][:, 1:1 + self.NUM_FEATURES].astype(float)  # 获取特征A和特征B的值
             label_data = np.array([self._generate_label(row, self.predict_window) for row in self.data[self.data[:, 0] == id]]).astype(float)
@@ -110,11 +110,14 @@ class TestModel:
             for j in range(patient_data.shape[0]):
                 if j < self.observe_window - 1:
                     patient_meta_tensor = torch.tensor(patient_data[:j, :]).unsqueeze(0)
-                    data_list.append(patient_meta_tensor)
+                    first_row = patient_meta_tensor[:, 0:1, :]
+                    rows_to_add = self.observe_window - (j - 1)
+                    padded_tensor = torch.cat([first_row.expand(1, rows_to_add, 5), patient_meta_tensor], dim=1)
+                    data_list.append(padded_tensor)
                 else:
                     patient_meta_tensor = torch.tensor(patient_data[j - self.observe_window + 1:j, :])
                     data_list.append(patient_meta_tensor)
-                label_meta_tensor = torch.tensor(label_data[j]).unsqueeze(0)
+                    label_meta_tensor = torch.tensor(label_data[j]).unsqueeze(0)
                 label_list.append(label_meta_tensor)
 
         # 将列表转换为张量
