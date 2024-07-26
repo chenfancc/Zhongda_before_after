@@ -11,10 +11,10 @@ from torch.optim.lr_scheduler import StepLR
 from tqdm import tqdm
 
 
-# 获取项目根目录的路径
-project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.append(project_root)
-from related_function.function import calculate_metrics, plot_confusion_matrix, main_data_loader
+# # 获取项目根目录的路径
+# project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# sys.path.append(project_root)
+from ..related_function.function import calculate_metrics, plot_confusion_matrix, main_data_loader
 
 
 warnings.filterwarnings('ignore', category=RuntimeWarning)

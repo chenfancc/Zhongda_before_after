@@ -25,7 +25,7 @@ if __name__ == '__main__':
 
     for dataset_type in ['train_data', 'valid_data']:
         for model_name in model_names:
-            with open(f'details/details_{model_name}_{dataset_type}.pkl', 'rb') as file:
+            with open(f'details_{model_name}_{dataset_type}.pkl', 'rb') as file:
                 details = pickle.load(file)
 
             machp_list = []
