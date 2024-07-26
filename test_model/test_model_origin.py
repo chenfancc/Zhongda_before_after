@@ -40,7 +40,7 @@ class TestModel:
         self.DEVICE = device
         self.root_dir = root_dir
         self.model_name = my_model_name
-        self.data = origin_data
+        self.data = origin_data.values
         self.model.to(self.DEVICE)
         self.is_print = is_print
         self.NUM_FEATURES=NUM_FEATURES
