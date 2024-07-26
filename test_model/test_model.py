@@ -11,9 +11,9 @@ from torch.optim.lr_scheduler import StepLR
 from tqdm import tqdm
 
 
-# # 获取项目根目录的路径
-# project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-# sys.path.append(project_root)
+# 获取项目根目录的路径
+project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(project_root)
 from ..related_function.function import calculate_metrics, plot_confusion_matrix, main_data_loader
 
 
@@ -319,6 +319,6 @@ def Zhongda_test_model(tensor_direction, observe_window, predict_window, model, 
 if __name__ == '__main__':
     # model = torch.load('model_direction')
     # Zhongda_test_model(TIME_STPE, i, model, epoch)
-    model = torch.load('../select_model/Zhongda_data/zzz_saved_model/use_6_predict_6_BiLSTM_BN_model_undersample_FocalLoss_5_5e-06_model_2.pth')
+    model = torch.load('../select_model/Zhongda_data/zzz_saved_model/use_20_predict_24_BiLSTM_BN_3layers_model_undersample_FocalLoss_50_5e-06_model_33.pth')
     tensor_direction = '../生成tensor/mice_mmscaler_use_20_predict_24.pth'
-    Zhongda_test_model(tensor_direction, 6, 6, model, 30)
+    Zhongda_test_model(tensor_direction, 20, 24, model, 33)
