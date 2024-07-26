@@ -12,10 +12,11 @@ from torch.optim.lr_scheduler import StepLR
 from tqdm import tqdm
 from torch.utils.data import TensorDataset, DataLoader
 
-# # 获取项目根目录的路径
-# project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-# sys.path.append(project_root)
-from ..related_function.function import calculate_metrics, plot_confusion_matrix, main_data_loader
+
+# 获取项目根目录的路径
+project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(project_root)
+from related_function.function import calculate_metrics, plot_confusion_matrix, main_data_loader
 
 
 warnings.filterwarnings('ignore', category=RuntimeWarning)
@@ -106,7 +107,6 @@ class TestModel:
             patient_data = self.data[self.data[:, 0] == id][:, 1:1 + self.NUM_FEATURES].astype(float)  # 获取特征A和特征B的值
             label_data = np.array([self._generate_label(row, self.predict_window) for row in self.data[self.data[:, 0] == id]]).astype(float)
 
-            lenth = patient_data.shape[0] - self.observe_window + 1
             for j in range(patient_data.shape[0]):
                 if j < self.observe_window - 1:
                     patient_meta_tensor = torch.tensor(patient_data[:j, :]).unsqueeze(0)
@@ -330,9 +330,9 @@ def plot_prc(true_labels_flat_train, predicted_probs_flat_train,
     plt.show()
 
 
-def Zhongda_test_model(observe_window, predict_window, model, epoch):
+def Zhongda_test_model(data_direction, observe_window, predict_window, model, epoch):
     root_dir = f'use_{observe_window}_predict_{predict_window}_{model.__class__.__name__}_{epoch}'
-    with open(dir, 'rb') as f:
+    with open(data_direction, 'rb') as f:
         data_split_dict = pickle.load(f)
     print(f'root_dir: {root_dir}')
     BATCH_SIZE = 256
@@ -372,5 +372,5 @@ if __name__ == '__main__':
     # model = torch.load('model_direction')
     # Zhongda_test_model(TIME_STPE, i, model, epoch)
     model = torch.load('../select_model/Zhongda_data/zzz_saved_model/use_20_predict_24_BiLSTM_BN_3layers_model_undersample_FocalLoss_50_5e-06_model_33.pth')
-    tensor_direction = '../生成tensor/mice_mmscaler_use_20_predict_24.pth'
-    Zhongda_test_model(20, 24, model, 33)
+    data_direction = '../Analysis/data_split_dict_0724.pkl'
+    Zhongda_test_model(data_direction, 20, 24, model, 33)
