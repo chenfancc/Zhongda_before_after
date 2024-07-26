@@ -91,13 +91,13 @@ class model_trainer_factory():
                         plot_info(info, model_name, root_dir=root_dir)
     def select_model(self, observe_window, predict_window, SAMPLE_METHOD, model, epoch):
 
-        tensor_direction = f'生成tensor/mice_mmscaler_use_{observe_window}_predict_{predict_window}.pth'
+        origin_data_direction = f'Analysis/data_split_dict_0724.pkl'
         root_dir = 'select_model/Zhongda_data'
         name = f'use_{observe_window}_predict_{predict_window}'
         model_name = f"{name}_{model.__name__}_model_{SAMPLE_METHOD}_FocalLoss_{self.EPOCH}_{self.LR}"
         np.random.seed(self.SEED)
         torch.manual_seed(self.SEED)
-        train_dataloader, val_dataloader = main_data_loader(tensor_direction, SAMPLE_METHOD, self.BATCH_SIZE)
+        train_dataloader, val_dataloader = main_data_loader(origin_data_direction, SAMPLE_METHOD, self.BATCH_SIZE)
         loss_f = FocalLoss(self.ALPHA_LOSS, self.GAMMA_LOSS)
         trainer = TrainModel(model_name, model, self.hyperparameters, train_dataloader, val_dataloader,
                              criterion_class=loss_f, root_dir=root_dir, is_print=True, save_model_index=epoch)
