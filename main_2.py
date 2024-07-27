@@ -6,6 +6,9 @@ from related_function.model_trainer import TrainModel
 from related_function.model import *
 from related_function.function import plot_info
 from datetime import datetime
+import warnings
+
+warnings.filterwarnings('ignore')
 
 
 class model_trainer_factory():
