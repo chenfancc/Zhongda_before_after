@@ -48,15 +48,16 @@ class model_trainer_factory():
 
     def MIMIC_train(self):
         is_print = False
+        feature_type = 'origin'
         # input_size = TIME_STEP
         for observe_window in [20, 6, 8, 12, 18, 24]:
             # i：结果时间步
             for predict_window in [24, 6, 8, 12, 18, 20]:
-                tensor_direction = f'生成tensor/delta/mice_mmscaler_use_{observe_window}_predict_{predict_window}_delta.pth'
+                tensor_direction = f'生成tensor/{feature_type}/mice_mmscaler_use_{observe_window}_predict_{predict_window}_{type}.pth'
 
                 if os.path.exists(tensor_direction) and os.path.getsize(tensor_direction) > 0:
                     try:
-                        root_dir = 'Results_zhongda_before_after_delta'
+                        root_dir = f'Results_zhongda_before_after_{feature_type}'
                         name = f'use_{observe_window}_predict_{predict_window}'
                         data_process = '前后填充 + 均值方差标准化'
 
