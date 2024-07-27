@@ -53,7 +53,7 @@ class model_trainer_factory():
         for observe_window in [20, 6, 8, 12, 18, 24]:
             # i：结果时间步
             for predict_window in [24, 6, 8, 12, 18, 20]:
-                tensor_direction = f'生成tensor/{feature_type}/mice_mmscaler_use_{observe_window}_predict_{predict_window}_{type}.pth'
+                tensor_direction = f'生成tensor/{feature_type}/mice_mmscaler_use_{observe_window}_predict_{predict_window}_{feature_type}.pth'
 
                 if os.path.exists(tensor_direction) and os.path.getsize(tensor_direction) > 0:
                     try:
@@ -98,7 +98,7 @@ class model_trainer_factory():
                                 train_dataloader, val_dataloader = main_data_loader(tensor_direction, SAMPLE_METHOD, self.BATCH_SIZE)
                                 loss_f = FocalLoss(self.ALPHA_LOSS, self.GAMMA_LOSS)
                                 trainer = TrainModel(model_name, model, self.hyperparameters, train_dataloader,
-                                                     val_dataloader,
+                                                     val_dataloader, Feature_number=10,
                                                      criterion_class=loss_f, root_dir=root_dir, is_print=is_print,
                                                      model_self_name=model.__name__)
                                 info = trainer.train()
