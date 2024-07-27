@@ -8,6 +8,9 @@ conda activate zhongda_env
 
 pip install -r requirements.txt
 ```
+```
+git@github.com:chenfancc/Zhongda_before_after.git
+```
 # Introduce the file structure:
 ## ***WARNING: NO NEED, NO MODIFY***
 + [main.py](main.py): the training code of the model.
