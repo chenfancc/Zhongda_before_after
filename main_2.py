@@ -98,7 +98,7 @@ class model_trainer_factory():
                                 train_dataloader, val_dataloader = main_data_loader(tensor_direction, SAMPLE_METHOD, self.BATCH_SIZE)
                                 loss_f = FocalLoss(self.ALPHA_LOSS, self.GAMMA_LOSS)
                                 trainer = TrainModel(model_name, model, self.hyperparameters, train_dataloader,
-                                                     val_dataloader, Feature_number=10,
+                                                     val_dataloader, Feature_number=10 if feature_type == 'delta' else 5,
                                                      criterion_class=loss_f, root_dir=root_dir, is_print=is_print,
                                                      model_self_name=model.__name__)
                                 info = trainer.train()
