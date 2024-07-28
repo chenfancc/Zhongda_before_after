@@ -1106,10 +1106,10 @@ class RNN_BN_single(nn.Module):
 class sLSTM(nn.Module):
     def __init__(self, Feature_number):
         super(sLSTM, self).__init__()
-        self.xlstm = xLSTM(Feature_number, hidden_size=120, num_heads=5, layers=['s', 's', 's', 's'],
+        self.xlstm = xLSTM(Feature_number, hidden_size=120, num_heads=Feature_number, layers=['s', 's', 's', 's'],
                            batch_first=True)
-        self.bn = nn.BatchNorm1d(5)
-        self.fc5 = nn.Linear(5, 1)
+        self.bn = nn.BatchNorm1d(Feature_number)
+        self.fc5 = nn.Linear(Feature_number, 1)
 
     def __str__(self):
         return 'sLSTM'
