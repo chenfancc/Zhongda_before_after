@@ -57,7 +57,6 @@ class model_trainer_factory():
         for observe_window in [20, 24, 6, 8, 12, 18]:
             # i：结果时间步
             for predict_window in [24, 20, 6, 8, 12, 18]:
-                if observe_window!=20 or predict_window!=24: break
                 tensor_direction = f'/mnt/workspace/Zhongda_nomerge_811/gene_tensor/{feature_type}/mice_mmscaler_use_{observe_window}_predict_{predict_window}_{feature_type}.pth'
 
                 if os.path.exists(tensor_direction) and os.path.getsize(tensor_direction) > 0:
