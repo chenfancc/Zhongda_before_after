@@ -10,14 +10,13 @@ from torch import nn
 from torch.optim.lr_scheduler import StepLR
 from tqdm import tqdm
 
-
 # 获取项目根目录的路径
 project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(project_root)
-from ..related_function.function import calculate_metrics, plot_confusion_matrix, main_data_loader
-
+from related_function.function import calculate_metrics, plot_confusion_matrix, main_data_loader
 
 warnings.filterwarnings('ignore', category=RuntimeWarning)
+
 
 class TestModel:
     """
@@ -56,7 +55,8 @@ class TestModel:
         (threshold_auc, accuracy_auc, specificity_auc, alarm_sen_auc, alarm_acc_auc,
          threshold_prc, accuracy_prc, specificity_prc, alarm_sen_prc, alarm_acc_prc,
          auc, prc, brier, true_labels_flat, predicted_probs_flat,
-         acc_list, spe_list, alarm_sen_list, alarm_acc_list, cm_list, PPV_list, NPV_list, F1_list) = self.validate(self.dataloader)
+         acc_list, spe_list, alarm_sen_list, alarm_acc_list, cm_list, PPV_list, NPV_list, F1_list) = self.validate(
+            self.dataloader)
 
         info = {
             "accuracy_list": acc_list,
@@ -231,7 +231,8 @@ def convert_to_serializable(obj):
 
 
 def plot_roc(true_labels_flat_train, predicted_probs_flat_train,
-             true_labels_flat_valid, predicted_probs_flat_valid, root_dir):
+             true_labels_flat_valid, predicted_probs_flat_valid,
+             true_labels_flat_test, predicted_probs_flat_test, root_dir):
     import matplotlib.pyplot as plt
     from sklearn.metrics import roc_curve, auc
 
@@ -242,11 +243,15 @@ def plot_roc(true_labels_flat_train, predicted_probs_flat_train,
     fpr_valid, tpr_valid, _ = roc_curve(true_labels_flat_valid, predicted_probs_flat_valid)
     roc_auc_valid = auc(fpr_valid, tpr_valid)
 
+    fpr_test, tpr_test, _ = roc_curve(true_labels_flat_test, predicted_probs_flat_test)
+    roc_auc_test = auc(fpr_test, tpr_test)
+
     # 绘制ROC曲线
     plt.figure()
 
     plt.plot(fpr_train, tpr_train, color='blue', lw=2, label=f'Train ROC curve (area = {roc_auc_train:.2f})')
     plt.plot(fpr_valid, tpr_valid, color='green', lw=2, label=f'Validation ROC curve (area = {roc_auc_valid:.2f})')
+    plt.plot(fpr_test, tpr_test, color='red', lw=2, label=f'Test ROC curve (area = {roc_auc_test:.2f})')
 
     plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')
 
@@ -262,7 +267,8 @@ def plot_roc(true_labels_flat_train, predicted_probs_flat_train,
 
 
 def plot_prc(true_labels_flat_train, predicted_probs_flat_train,
-             true_labels_flat_valid, predicted_probs_flat_valid, root_dir):
+             true_labels_flat_valid, predicted_probs_flat_valid,
+             true_labels_flat_test, predicted_probs_flat_test, root_dir):
     import matplotlib.pyplot as plt
     from sklearn.metrics import precision_recall_curve, average_precision_score
 
@@ -273,11 +279,16 @@ def plot_prc(true_labels_flat_train, predicted_probs_flat_train,
     precision_valid, recall_valid, _ = precision_recall_curve(true_labels_flat_valid, predicted_probs_flat_valid)
     avg_precision_valid = average_precision_score(true_labels_flat_valid, predicted_probs_flat_valid)
 
+    precision_test, recall_test, _ = precision_recall_curve(true_labels_flat_test, predicted_probs_flat_test)
+    avg_precision_test = average_precision_score(true_labels_flat_test, predicted_probs_flat_test)
+
     # 绘制PRC曲线
     plt.figure()
 
     plt.plot(recall_train, precision_train, color='blue', lw=2, label=f'Train PRC (area = {avg_precision_train:.2f})')
-    plt.plot(recall_valid, precision_valid, color='green', lw=2, label=f'Validation PRC (area = {avg_precision_valid:.2f})')
+    plt.plot(recall_valid, precision_valid, color='green', lw=2,
+             label=f'Validation PRC (area = {avg_precision_valid:.2f})')
+    plt.plot(recall_test, precision_test, color='red', lw=2, label=f'Test PRC (area = {avg_precision_test:.2f})')
 
     plt.xlabel('Recall')
     plt.ylabel('Precision')
@@ -288,8 +299,8 @@ def plot_prc(true_labels_flat_train, predicted_probs_flat_train,
     plt.show()
 
 
-def Zhongda_test_model(tensor_direction, observe_window, predict_window, model, epoch):
-    root_dir = f'use_{observe_window}_predict_{predict_window}_{model.__class__.__name__}_{epoch}'
+def Zhongda_test_model(tensor_direction, feature_type, observe_window, predict_window, model, epoch):
+    root_dir = f'{feature_type}_use_{observe_window}_predict_{predict_window}_{model.__class__.__name__}_{epoch}'
     print(f'root_dir: {root_dir}')
     BATCH_SIZE = 256
     SEED = 42
@@ -297,28 +308,59 @@ def Zhongda_test_model(tensor_direction, observe_window, predict_window, model, 
 
     np.random.seed(SEED)
     torch.manual_seed(SEED)
-    train_dataloader, valid_dataloader = main_data_loader(tensor_direction, 'origin', BATCH_SIZE)
+    train_dataloader, valid_dataloader, test_dataloader = main_data_loader(tensor_direction, 'origin', BATCH_SIZE)
+    'Dataloader is ready'
 
-    info_train, true_labels_flat_train, predicted_probs_flat_train = TestModel(f'{root_dir}_train', model, device, epoch,
-                                                                      train_dataloader, root_dir=root_dir, is_print=False).test()
-    info_valid, true_labels_flat_valid, predicted_probs_flat_valid = TestModel(f'{root_dir}_valid', model, device, epoch,
-                                                                      valid_dataloader, root_dir=root_dir, is_print=False).test()
+    info_train, true_labels_flat_train, predicted_probs_flat_train = TestModel(f'{root_dir}_train', model, device,
+                                                                               epoch,
+                                                                               train_dataloader, root_dir=root_dir,
+                                                                               is_print=False).test()
+    info_valid, true_labels_flat_valid, predicted_probs_flat_valid = TestModel(f'{root_dir}_valid', model, device,
+                                                                               epoch,
+                                                                               valid_dataloader, root_dir=root_dir,
+                                                                               is_print=False).test()
+    info_test, true_labels_flat_test, predicted_probs_flat_test = TestModel(f'{root_dir}_test', model, device, epoch,
+                                                                            test_dataloader, root_dir=root_dir,
+                                                                            is_print=False).test()
 
     plot_roc(true_labels_flat_train, predicted_probs_flat_train,
-             true_labels_flat_valid, predicted_probs_flat_valid, root_dir)
+             true_labels_flat_valid, predicted_probs_flat_valid,
+             true_labels_flat_test, predicted_probs_flat_test, root_dir)
     plot_prc(true_labels_flat_train, predicted_probs_flat_train,
-             true_labels_flat_valid, predicted_probs_flat_valid, root_dir)
-    with open(f'../Analysis/metrics_info/{model.__class__.__name__}_info_train.json', 'w') as json_file:
+             true_labels_flat_valid, predicted_probs_flat_valid,
+             true_labels_flat_test, predicted_probs_flat_test, root_dir)
+
+    if not os.path.exists('../Analysis/metrics_info'):
+        os.makedirs('../Analysis/metrics_info')
+    with open(f'../Analysis/metrics_info/{model.__class__.__name__}_info_train_data_{feature_type}.json',
+              'w') as json_file:
         json.dump(info_train, json_file, ensure_ascii=False, indent=4, default=convert_to_serializable)
-    with open(f'../Analysis/metrics_info/{model.__class__.__name__}_info_valid.json', 'w') as json_file:
+    with open(f'../Analysis/metrics_info/{model.__class__.__name__}_info_valid_data_{feature_type}.json',
+              'w') as json_file:
         json.dump(info_valid, json_file, ensure_ascii=False, indent=4, default=convert_to_serializable)
+    with open(f'../Analysis/metrics_info/{model.__class__.__name__}_info_test_data_{feature_type}.json',
+              'w') as json_file:
+        json.dump(info_test, json_file, ensure_ascii=False, indent=4, default=convert_to_serializable)
 
     print(f'finish {root_dir}')
+
+
+def test_1():
+    model = torch.load(
+        '../Zhongda_data_origin/zzz_saved_model/use_20_predict_24_GRU_BN_ResBlock_3layers_model_undersample_FocalLoss_50_5e-06_model_17.pth')
+    tensor_direction = '../生成tensor/origin/mice_mmscaler_use_20_predict_24_origin.pth'
+    Zhongda_test_model(tensor_direction, 'origin', 20, 24, model, 17)
+
+
+def test_2():
+    model = torch.load(
+        '../Zhongda_data_delta/zzz_saved_model/use_20_predict_24_GRU_BN_ResBlock_3layers_model_undersample_FocalLoss_50_5e-06_model_25.pth')
+    tensor_direction = '../生成tensor/delta/mice_mmscaler_use_20_predict_24_delta.pth'
+    Zhongda_test_model(tensor_direction, 'delta', 20, 24, model, 25)
 
 
 if __name__ == '__main__':
     # model = torch.load('model_direction')
     # Zhongda_test_model(TIME_STPE, i, model, epoch)
-    model = torch.load('../select_model/Zhongda_data/zzz_saved_model/use_20_predict_24_BiLSTM_BN_3layers_model_undersample_FocalLoss_50_5e-06_model_33.pth')
-    tensor_direction = '../生成tensor/mice_mmscaler_use_20_predict_24.pth'
-    Zhongda_test_model(tensor_direction, 20, 24, model, 33)
+    test_2()
+    test_1()
