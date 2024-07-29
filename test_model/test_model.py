@@ -348,14 +348,14 @@ def Zhongda_test_model(tensor_direction, feature_type, observe_window, predict_w
 def test_1():
     model = torch.load(
         '../Zhongda_data_origin/zzz_saved_model/use_20_predict_24_GRU_BN_ResBlock_3layers_model_undersample_FocalLoss_50_5e-06_model_17.pth')
-    tensor_direction = '../生成tensor/origin/mice_mmscaler_use_20_predict_24_origin.pth'
+    tensor_direction = '../gene_tensor/origin/mice_mmscaler_use_20_predict_24_origin.pth'
     Zhongda_test_model(tensor_direction, 'origin', 20, 24, model, 17)
 
 
 def test_2():
     model = torch.load(
         '../Zhongda_data_delta/zzz_saved_model/use_20_predict_24_GRU_BN_ResBlock_3layers_model_undersample_FocalLoss_50_5e-06_model_25.pth')
-    tensor_direction = '../生成tensor/delta/mice_mmscaler_use_20_predict_24_delta.pth'
+    tensor_direction = '../gene_tensor/delta/mice_mmscaler_use_20_predict_24_delta.pth'
     Zhongda_test_model(tensor_direction, 'delta', 20, 24, model, 25)
 
 

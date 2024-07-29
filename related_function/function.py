@@ -75,7 +75,7 @@ def calculate_metrics(true_labels_flat, predicted_probs_flat, best_threshold):
 def main_data_loader(data_dir, sample_method, batch_size):
     """
     加载数据
-    :param data_dir: 数据位置。如：生成tensor/mice_mmscaler_use_6_predict_6.pth
+    :param data_dir: 数据位置。如：gene_tensor/mice_mmscaler_use_6_predict_6.pth
     :param sample_method: 采样方式。如："undersample" or "oversample" or "smote"
     :return: train_dataloader_f, valid_dataloader_f, test_dataloader_f
     """

@@ -58,7 +58,7 @@ class model_trainer_factory():
             # i：结果时间步
             for predict_window in [24, 20, 6, 8, 12, 18]:
                 if observe_window!=20 or predict_window!=24: break
-                tensor_direction = f'/mnt/workspace/Zhongda_nomerge_811/生成tensor/{feature_type}/mice_mmscaler_use_{observe_window}_predict_{predict_window}_{feature_type}.pth'
+                tensor_direction = f'/mnt/workspace/Zhongda_nomerge_811/gene_tensor/{feature_type}/mice_mmscaler_use_{observe_window}_predict_{predict_window}_{feature_type}.pth'
 
                 if os.path.exists(tensor_direction) and os.path.getsize(tensor_direction) > 0:
                     try:
@@ -116,7 +116,7 @@ class model_trainer_factory():
 
     def select_model(self, observe_window, predict_window, feature_type, SAMPLE_METHOD, model, epoch):
 
-        tensor_direction = f'生成tensor/{feature_type}/mice_mmscaler_use_{observe_window}_predict_{predict_window}_{feature_type}.pth'
+        tensor_direction = f'gene_tensor/{feature_type}/mice_mmscaler_use_{observe_window}_predict_{predict_window}_{feature_type}.pth'
         root_dir = f'Zhongda_data_{feature_type}'
         name = f'use_{observe_window}_predict_{predict_window}'
         model_name = f"{name}_{model.__name__}_model_{SAMPLE_METHOD}_FocalLoss_{self.EPOCH}_{self.LR}"
@@ -137,7 +137,7 @@ if __name__ == '__main__':
     # Trainer.select_model(20, 24, "undersample", GRU_BN_ResBlock, [6])
     # Trainer.select_model(20, 24, "undersample", RNN_BN, [30])
     # Trainer.select_model(20, 24, "undersample", GRU_BN, [29])
-    dir = "/mnt/workspace/Zhongda_nomerge_811/生成tensor/delta/mice_mmscaler_use_20_predict_24_delta.pth"
+    dir = "/mnt/workspace/Zhongda_nomerge_811/gene_tensor/delta/mice_mmscaler_use_20_predict_24_delta.pth"
     while True:
         if os.path.exists(dir) and os.path.getsize(dir) > 0:
             break

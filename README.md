@@ -41,7 +41,7 @@ git clone git@github.com:chenfancc/Zhongda_before_after.git
   + [model_trainer.py](related_function/model_trainer.py): the trainer class used to train the model.
   + [sample.py](related_function/sample.py): the sample method used to sample the data.
   + [xlstm.py](related_function/xlstm.py): xlstm block
-+ [生成tensor](生成tensor): the generated tensor used to train the model.
++ [生成tensor](gene_tensor): the generated tensor used to train the model.
 + [Analysis](Analysis): the analysis of the results.
   + [data_split_dict_0724.pkl](Analysis%2Fdata_split_dict_0724.pkl): the original data split dictionary.
 # Work flow:

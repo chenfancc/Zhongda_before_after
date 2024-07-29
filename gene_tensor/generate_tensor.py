@@ -197,7 +197,7 @@ if __name__ == '__main__':
     observe_windows = [20, 24, 6, 8, 12, 18]
     predict_windows = [24, 20, 6, 8, 12, 18]
 
-    data = pd.read_csv('../生成tensor/mice_mmscaler_nomerge_adtime_0726.csv')
+    data = pd.read_csv('/mice_mmscaler_nomerge_adtime_0726.csv')
     data = data.drop(data.columns[[0, 1]], axis=1)
 
     for observe_window in observe_windows:
