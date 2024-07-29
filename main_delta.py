@@ -76,7 +76,7 @@ class model_trainer_factory():
                                 BiLSTM_BN_ResBlock, GRU_BN_ResBlock, RNN_BN_ResBlock,
                                 BiLSTM_BN_ResBlock_3layers, GRU_BN_ResBlock_3layers, RNN_BN_ResBlock_3layers,
                                 BiLSTM_BN_single, GRU_BN_single, RNN_BN_single, sLSTM
-                            ], desc=f'{name}: '):
+                            ], desc=f'{feature_type}-{name}: '):
                             # for model in [BiLSTM_BN_3layers, GRU_BN, GRU_BN_ResBlock, RNN_BN] if is_print else tqdm([BiLSTM_BN_3layers, GRU_BN, GRU_BN_ResBlock, RNN_BN]):
 
                                 if is_print: print(SAMPLE_METHOD, "_", model.__name__)
