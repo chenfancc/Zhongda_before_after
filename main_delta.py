@@ -52,7 +52,7 @@ class model_trainer_factory():
 
     def MIMIC_train(self):
         is_print = False
-        feature_type = 'origin'
+        feature_type = 'delta'
         # input_size = TIME_STEP
         for observe_window in [20, 24, 6, 8, 12, 18]:
             # i：结果时间步
@@ -100,7 +100,7 @@ class model_trainer_factory():
                                 # 设置随机种子
                                 np.random.seed(self.SEED)
                                 torch.manual_seed(self.SEED)
-                                train_dataloader, val_dataloader = main_data_loader(tensor_direction, SAMPLE_METHOD, self.BATCH_SIZE)
+                                train_dataloader, val_dataloader, _ = main_data_loader(tensor_direction, SAMPLE_METHOD, self.BATCH_SIZE)
                                 loss_f = FocalLoss(self.ALPHA_LOSS, self.GAMMA_LOSS)
                                 trainer = TrainModel(model_name, model, self.hyperparameters, train_dataloader,
                                                      val_dataloader, Feature_number=10 if feature_type == 'delta' else 5,
@@ -137,12 +137,12 @@ if __name__ == '__main__':
     # Trainer.select_model(20, 24, "undersample", GRU_BN_ResBlock, [6])
     # Trainer.select_model(20, 24, "undersample", RNN_BN, [30])
     # Trainer.select_model(20, 24, "undersample", GRU_BN, [29])
-    dir = "/mnt/workspace/Zhongda_nomerge_811/生成tensor/origin/mice_mmscaler_use_20_predict_24_origin.pth"
+    dir = "/mnt/workspace/Zhongda_nomerge_811/生成tensor/delta/mice_mmscaler_use_20_predict_24_delta.pth"
     while True:
         if os.path.exists(dir) and os.path.getsize(dir) > 0:
             break
         print("Awaiting...")
         time.sleep(10)
 
-    # Trainer.MIMIC_train()
-    Trainer.select_model(20, 24, 'origin', 'undersample', RNN_BN_3layers, [14])
+    Trainer.MIMIC_train()
+    # Trainer.select_model(20, 24, 'delta', 'undersample', RNN_BN_3layers, [14])
